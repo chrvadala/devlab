@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script>
+
+    function start() {
+      svgElement = document.getElementById('svg');
+      viewElement = document.getElementById('view');
+      positionXElement = document.getElementById('positionX');
+      positionYElement = document.getElementById('positionY');
+
+      zoomLevel = 1;
+      positionX = 0;
+      positionY = 0;
+      refresh();
+    }
+
+    function refresh() {
+      matrix = svgElement.createSVGMatrix()
+        .scale(zoomLevel)
+        .translate(positionX, positionY);
+      newTransform = svgElement.createSVGTransformFromMatrix(matrix);
+      viewElement.transform.baseVal.initialize(newTransform);
+      inverse = matrix.inverse();
+    }
+
+    function move(e) {
+      console.log("x", e.pageX, "y", e.pageY);
+
+      var pt = svg.createSVGPoint();
+      pt.x = e.clientX;
+      pt.y = e.clientY;
+      var globalPoint = pt.matrixTransform(inverse);
+      var x = globalPoint.x;
+      var y = globalPoint.y;
+      console.log("x!", x, "y!", y);
+      positionXElement.textContent = x;
+      positionYElement.textContent = y;
+    }
+
+    function zoomIn() {
+      zoomLevel += 0.1;
+      refresh();
+    }
+
+    function zoomOut() {
+      zoomLevel -= 0.1;
+      refresh();
+    }
+
+    function moveUp() {
+      positionY -= 10;
+      refresh();
+    }
+    function moveDown() {
+      positionY += 10;
+      refresh();
+    }
+    function moveLeft() {
+      positionX -= 10;
+      refresh();
+    }
+    function moveRight() {
+      positionX += 10;
+      refresh();
+    }
+    function reset() {
+      positionX = 0;
+      positionY = 0;
+      zoomLevel = 1;
+      refresh();
+    }
+
+
+  </script>
+</head>
+<body style="margin: 0; padding: 0;" onload="start()">
+
+<svg width="600" height="300" style="border: 1px solid black;" id="svg"
+     viewBox="0 0 600 300"
+     xmlns="http://www.w3.org/2000/svg" onmousemove="move(event)">
+
+  <rect fill="#616264" x="0" y="0" width="600" height="300"></rect>
+  <g id="view">
+    <rect fill="white" x="0" y="0" width="600" height="300"></rect>
+    <rect x="10" y="10" width="100" height="100"></rect>
+  </g>
+</svg>
+
+<div id="controls">
+  <a href="javascript: zoomIn()">Zoom in</a> -
+  <a href="javascript: zoomOut()">Zoom out</a> -
+  <a href="javascript: moveUp()">Move up</a> -
+  <a href="javascript: moveDown()">Move down</a> -
+  <a href="javascript: moveLeft()">Move left</a> -
+  <a href="javascript: moveRight()">Move right</a> -
+  <a href="javascript: reset()">Reset</a>
+</div>
+<div id="position">
+  Position
+  x: <span id="positionX"></span>
+  y: <span id="positionY"></span>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+.idea
+npm-debug.log
+
+editor/node_modules
+editor/build/*.js
+
+editor2viewer/node_modules
+viewer/pointclouds
