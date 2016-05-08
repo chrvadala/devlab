@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<script>
+
+  function start() {
+
+    var opt = {filters: [{services: ['generic_access']}]};
+
+    navigator.bluetooth.requestDevice(opt).then(
+      function (d) {
+        console.log("found a device", d);
+        return d.gatt.connect();
+      },
+      function (e) {
+        console.error(e);
+      }
+    ).then(function (device) {
+      console.log(device);
+    })
+
+  }
+
+</script>
+
+<a href="javascript:start()">start</a>
+
+</body>
+</html>
