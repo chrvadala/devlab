@@ -11,6 +11,7 @@
       positionXElement = document.getElementById('positionX');
       positionYElement = document.getElementById('positionY');
 
+      currentPanStartPoint = false;
       zoomLevel = 1;
       positionX = 0;
       positionY = 0;
@@ -27,7 +28,7 @@
     }
 
     function move(e) {
-      console.log("x", e.pageX, "y", e.pageY);
+//      console.log("x", e.pageX, "y", e.pageY);
 
       var pt = svg.createSVGPoint();
       pt.x = e.clientX;
@@ -35,9 +36,37 @@
       var globalPoint = pt.matrixTransform(inverse);
       var x = globalPoint.x;
       var y = globalPoint.y;
-      console.log("x!", x, "y!", y);
+//      console.log("x!", x, "y!", y);
       positionXElement.textContent = x;
       positionYElement.textContent = y;
+    }
+
+    function startPanning(e) {
+      console.log('start pan', positionX);
+      currentPanStartPoint = {
+        x: e.pageX,
+        y: e.pageY,
+        positionX : positionX,
+        positionY: positionY
+      };
+
+    }
+
+    function updatePanning(e) {
+      if(currentPanStartPoint){
+
+        var deltaX = e.pageX - currentPanStartPoint.x;
+        var deltaY = e.pageY - currentPanStartPoint.y;
+
+        positionX = currentPanStartPoint.positionX + deltaX;
+        positionY = currentPanStartPoint.positionY + deltaY;
+        refresh();
+      }
+    }
+
+    function stopPanning(e) {
+      console.log('stop pan');
+      currentPanStartPoint = false;
     }
 
     function zoomIn() {
@@ -80,7 +109,11 @@
 
 <svg width="600" height="300" style="border: 1px solid black;" id="svg"
      viewBox="0 0 600 300"
-     xmlns="http://www.w3.org/2000/svg" onmousemove="move(event)">
+     xmlns="http://www.w3.org/2000/svg"
+     onmousemove="move(event); updatePanning(event);"
+     onmousedown="startPanning(event)"
+     onmouseup="stopPanning(event)"
+>
 
   <rect fill="#616264" x="0" y="0" width="600" height="300"></rect>
   <g id="view">
