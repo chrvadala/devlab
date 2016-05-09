@@ -55,8 +55,8 @@
     function updatePanning(e) {
       if(currentPanStartPoint){
 
-        var deltaX = e.clientX - currentPanStartPoint.x;
-        var deltaY = e.clientY - currentPanStartPoint.y;
+        var deltaX = (e.clientX - currentPanStartPoint.x) * (1/zoomLevel);
+        var deltaY = (e.clientY - currentPanStartPoint.y) * (1/zoomLevel);
 
         positionX = currentPanStartPoint.positionX + deltaX;
         positionY = currentPanStartPoint.positionY + deltaY;
