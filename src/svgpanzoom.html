@@ -101,6 +101,20 @@
       zoomLevel = 1;
       refresh();
     }
+    function pinch(event){
+      if (event.ctrlKey) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        if(event.deltaY < 0){
+          zoomLevel += 0.01;
+        }else{
+          zoomLevel -= 0.01;
+        }
+        refresh();
+
+      }
+    }
 
 
   </script>
@@ -113,6 +127,7 @@
      onmousemove="move(event); updatePanning(event);"
      onmousedown="startPanning(event)"
      onmouseup="stopPanning(event)"
+     onmousewheel="pinch(event)"
 >
 
   <rect fill="#616264" x="0" y="0" width="600" height="300"></rect>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pinch</title>
+  <script>
+
+    function start(){
+
+      node = document.getElementById('node');
+      node.addEventListener('mousewheel', function(e) {
+
+        if (e.ctrlKey) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+
+          // perform desired zoom action here
+          console.log(22, e.deltaX, e.deltaY, e.deltaZ);
+
+
+        }
+
+//        if (e.scale < 1.0) {
+//          // User moved fingers closer together
+//          console.log(1);
+//        } else if (e.scale > 1.0) {
+//          // User moved fingers further apart
+//          console.log(2);
+//        }
+      }, false);
+
+      node.addEventListener('click', function(e){
+        console.log(e.type);
+      });
+      node.addEventListener('touchstart', function(e){
+        console.log(e.type);
+      });
+
+
+
+    }
+
+
+  </script>
+</head>
+<body onload="start()" id="node" style="width: 500px; height: 500px;">
+
+</body>
+</html>
