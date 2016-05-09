@@ -28,7 +28,7 @@
     }
 
     function move(e) {
-//      console.log("x", e.pageX, "y", e.pageY);
+//      console.log("x", e.clientX, "y", e.clientY);
 
       var pt = svg.createSVGPoint();
       pt.x = e.clientX;
@@ -44,8 +44,8 @@
     function startPanning(e) {
       console.log('start pan', positionX);
       currentPanStartPoint = {
-        x: e.pageX,
-        y: e.pageY,
+        x: e.clientX,
+        y: e.clientY,
         positionX : positionX,
         positionY: positionY
       };
@@ -55,8 +55,8 @@
     function updatePanning(e) {
       if(currentPanStartPoint){
 
-        var deltaX = e.pageX - currentPanStartPoint.x;
-        var deltaY = e.pageY - currentPanStartPoint.y;
+        var deltaX = e.clientX - currentPanStartPoint.x;
+        var deltaY = e.clientY - currentPanStartPoint.y;
 
         positionX = currentPanStartPoint.positionX + deltaX;
         positionY = currentPanStartPoint.positionY + deltaY;
