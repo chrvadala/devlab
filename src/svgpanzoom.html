@@ -11,6 +11,12 @@
       positionXElement = document.getElementById('positionX');
       positionYElement = document.getElementById('positionY');
 
+      svgElement.addEventListener('mousemove', move);
+      svgElement.addEventListener('mousemove', updatePanning);
+      svgElement.addEventListener('mousedown', startPanning);
+      svgElement.addEventListener('mouseup', stopPanning);
+      svgElement.addEventListener('mousewheel', pinch);
+
       currentPanStartPoint = false;
       zoomLevel = 1;
       positionX = 0;
@@ -124,10 +130,6 @@
 <svg width="600" height="300" style="border: 1px solid black;" id="svg"
      viewBox="0 0 600 300"
      xmlns="http://www.w3.org/2000/svg"
-     onmousemove="move(event); updatePanning(event);"
-     onmousedown="startPanning(event)"
-     onmouseup="stopPanning(event)"
-     onmousewheel="pinch(event)"
 >
 
   <rect fill="#616264" x="0" y="0" width="600" height="300"></rect>
