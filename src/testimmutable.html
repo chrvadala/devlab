@@ -20,10 +20,6 @@ React addons update vs immutable js<br/>
     reset: function () {
       this.t0 = performance.now();
     },
-    stop: function () {
-      this.t1 = performance.now();
-      console.log((this.t1 - this.t0) + " milliseconds.")
-    },
     restart: function (message) {
       this.t1 = performance.now();
       console.log(message, (this.t1 - this.t0) + " milliseconds.")
@@ -40,8 +36,8 @@ React addons update vs immutable js<br/>
   for (let i = 0; i < N; i++) {
     status = status.set(i, new Immutable.Map({x: i, y: i, id: i}));
   }
-  Perf.restart("Immutable.js");
   console.log(status.toJS());
+  Perf.restart("Immutable.js");
 
 
   // IMMUTABLE WITH TRANSIENT
@@ -52,8 +48,8 @@ React addons update vs immutable js<br/>
       s.set(i, new Immutable.Map({x: i, y: i, id: i}));
     }
   });
-  Perf.restart("Immutable.js with transient");
   console.log(status.toJS());
+  Perf.restart("Immutable.js with transient");
 
 
   // ADDONS UPDATE
@@ -70,8 +66,8 @@ React addons update vs immutable js<br/>
       }
     });
   }
-  Perf.restart("addons update");
   console.log(status);
+  Perf.restart("addons update");
 
 
 </script>
