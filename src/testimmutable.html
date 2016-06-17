@@ -7,68 +7,76 @@
   <script type="text/javascript"
           src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-with-addons.js"></script>
 </head>
-<body>
+<body onload="start()">
 React addons update vs immutable js<br/>
 <strong>Open console</strong>
 
 <script>
 
-  let update = React.addons.update;
-  let Perf = {
-    t0: 0,
-    t1: 0,
-    reset: function () {
-      this.t0 = performance.now();
-    },
-    restart: function (message) {
-      this.t1 = performance.now();
-      console.log(message, (this.t1 - this.t0) + " milliseconds.")
-      this.t0 = performance.now();
-    }
+  let start = function() {
+    setTimeout(function () {
+      doTest();
+    }, 1000);
   };
 
-  let N = 13000;
-  let status;
+  let doTest = function() {
+    let update = React.addons.update;
+    let Perf = {
+      t0: 0,
+      t1: 0,
+      reset: function () {
+        this.t0 = performance.now();
+      },
+      restart: function (message) {
+        this.t1 = performance.now();
+        console.log(message, (this.t1 - this.t0) + " milliseconds.");
+        this.t0 = performance.now();
+      }
+    };
 
-  // IMMUTABLE.JS
-  Perf.reset();
-  status = new Immutable.Map();
-  for (let i = 0; i < N; i++) {
-    status = status.set(i, new Immutable.Map({x: i, y: i, id: i}));
-  }
-  console.log(status.toJS());
-  Perf.restart("Immutable.js");
+    let N = 13000;
+    let status;
 
-
-  // IMMUTABLE WITH TRANSIENT
-  Perf.reset();
-  status = new Immutable.Map();
-  status = status.withMutations(function (s) {
+    // IMMUTABLE.JS
+    Perf.reset();
+    status = new Immutable.Map();
     for (let i = 0; i < N; i++) {
-      s.set(i, new Immutable.Map({x: i, y: i, id: i}));
+      status = status.set(i, new Immutable.Map({x: i, y: i, id: i}));
     }
-  });
-  console.log(status.toJS());
-  Perf.restart("Immutable.js with transient");
+    console.log(status.toJS());
+    Perf.restart("Immutable.js");
 
 
-  // ADDONS UPDATE
-  Perf.reset();
-  status = {};
-  for (let i = 0; i < N; i++) {
-    status = update(status, {
-      $merge: {
-        [i]: {
-          x: i,
-          y: i,
-          id: i
-        }
+    // IMMUTABLE WITH TRANSIENT
+    Perf.reset();
+    status = new Immutable.Map();
+    status = status.withMutations(function (s) {
+      for (let i = 0; i < N; i++) {
+        s.set(i, new Immutable.Map({x: i, y: i, id: i}));
       }
     });
-  }
-  console.log(status);
-  Perf.restart("addons update");
+    console.log(status.toJS());
+    Perf.restart("Immutable.js with transient");
 
+
+    // ADDONS UPDATE
+    Perf.reset();
+    status = {};
+    for (let i = 0; i < N; i++) {
+      status = update(status, {
+        $merge: {
+          [i]: {
+            x: i,
+            y: i,
+            id: i
+          }
+        }
+      });
+    }
+    console.log(status);
+    Perf.restart("addons update");
+
+  }
 
 </script>
 
