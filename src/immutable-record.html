@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test immutable record</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.8.1/immutable.min.js"></script>
+  <script src="https://wzrd.in/standalone/immutable-devtools@latest"></script>
+</head>
+<body onload="start()">
+Test immutable Record<br/>
+<strong>Open console</strong>
+
+
+
+<script>
+
+  var start = function () {
+    setTimeout(function () {
+      doTest();
+    }, 1000);
+  };
+
+  var doTest = function () {
+
+    (function () {
+      var _log = console.log;
+      console.log = function () {
+        var args = Array.prototype.map.call(arguments, function (arg) {
+          return typeof arg.toJS === "function" ? arg.toJS() : arg;
+        });
+        return _log.apply(console, args);
+      };
+    })();
+
+
+    let Record = Immutable.Record;
+    let List = Immutable.List;
+    let Map = Immutable.Map;
+
+    var ABRecord = Record({a: 1, b: 2, c: List, d:Map, e: XRecord});
+    var XRecord = Record({k: 200});
+
+    var myRecord = new ABRecord({
+      b: 3,
+      c: new List([100, 200]),
+      d: new Map({
+        x: new XRecord({k:555}),
+        y: new XRecord({k:777})
+      }),
+      e: new XRecord({k:999})
+    });
+
+
+    console.log(myRecord.a, myRecord.b, myRecord.c, myRecord.d);
+
+    myRecord.c.forEach(function(item) {
+      console.log(item)
+    });
+
+    console.log(myRecord.toJS());
+
+    console.log(myRecord.e.k);
+
+    console.log(myRecord.d.get("x").k);
+
+
+  }
+
+</script>
+
+
+
+</body>
+</html>
