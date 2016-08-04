@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <title>Hello React!</title>
+  <script src="https://npmcdn.com/react@15.3.0/dist/react.js"></script>
+  <script src="https://npmcdn.com/react-dom@15.3.0/dist/react-dom.js"></script>
+  <script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
+</head>
+<body>
+<div id="example"></div>
+
+<script type="text/babel">
+
+  class Prova extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {w: 400, h: 400};
+      this.doW = this.doW.bind(this);
+    }
+
+    doW(e) {
+      var x = e.nativeEvent.offsetX, y = e.nativeEvent.offsetY;
+      console.log(x);
+//      console.log(e.deltaMode, e.deltaX, e.deltaY, e.deltaZ, e.nativeEvent.wheelDelta, e.nativeEvent.detail);
+      e.preventDefault();
+      var delta = Math.max(-1, Math.min(1, e.deltaY));
+      this.setState({w: this.state.w - delta * 20});
+      console.log(delta)
+    };
+
+    render() {
+      return (
+        <div style={{border: "1px solid", width: this.state.w, height: this.state.h}} onWheel={this.doW}>
+          <h1>Hello, React!</h1>
+        </div>
+      )
+    }
+  }
+
+
+  var wrapper = () => <div onWheel={e => e.preventDefault()}><Prova/></div>;
+
+  ReactDOM.render(
+    React.createElement(wrapper),
+    document.getElementById('example')
+  );
+</script>
+</body>
+</html>
