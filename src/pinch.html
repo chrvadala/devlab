@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>pinch</title>
+  <meta charset="UTF-8">
+  <title>pinch</title>
   <script>
 
-    function start(){
+    function start() {
       //https://www.sitepoint.com/html5-javascript-mouse-wheel/
       var myimage = document.getElementById("image");
 
       function MouseWheelHandler(e) {
+        console.log(e.x, e.y)
         // cross-browser wheel delta
         e = window.event || e; // old IE support
         var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-        myimage.style.width = Math.max(50, Math.min(800, myimage.width + (30 * delta))) + "px";
 
+        var delta_px = delta * 30;
+        var size = myimage.clientWidth;
+
+        myimage.style.width = Math.max((size + delta_px), 30) + 'px';
+
+        console.log(myimage.style.width);
+        console.log(delta);
+
+        e.preventDefault();
         return false;
       }
 
@@ -28,14 +37,24 @@
       // IE 6/7/8
       else myimage.attachEvent("onmousewheel", MouseWheelHandler);
 
-    }
 
+      var main = document.getElementById("main");
+      var preventDefault = function (e) {
+        e.preventDefault();
+        return false;
+      };
+      main.addEventListener("mousewheel", preventDefault, false);
+      main.addEventListener("onmousewheel", preventDefault, false);
+      main.addEventListener("DOMMouseScroll", preventDefault, false);
+    }
 
   </script>
 </head>
-<body onload="start()"  style="width: 500px; height: 500px;">
+<body onload="start()" style="width: 100%; height: 100%">
 
+<div id="main">
   <div id="image" style="border: 1px solid; width: 300px; height: 300px;"></div>
+</div>
 
 </body>
 </html>
