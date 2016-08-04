@@ -6,44 +6,36 @@
   <script>
 
     function start(){
+      //https://www.sitepoint.com/html5-javascript-mouse-wheel/
+      var myimage = document.getElementById("image");
 
-      node = document.getElementById('node');
-      node.addEventListener('mousewheel', function(e) {
+      function MouseWheelHandler(e) {
+        // cross-browser wheel delta
+        e = window.event || e; // old IE support
+        var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+        myimage.style.width = Math.max(50, Math.min(800, myimage.width + (30 * delta))) + "px";
 
-        if (e.ctrlKey) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-
-          // perform desired zoom action here
-          console.log(22, e.deltaX, e.deltaY, e.deltaZ);
-
-
-        }
-
-//        if (e.scale < 1.0) {
-//          // User moved fingers closer together
-//          console.log(1);
-//        } else if (e.scale > 1.0) {
-//          // User moved fingers further apart
-//          console.log(2);
-//        }
-      }, false);
-
-      node.addEventListener('click', function(e){
-        console.log(e.type);
-      });
-      node.addEventListener('touchstart', function(e){
-        console.log(e.type);
-      });
+        return false;
+      }
 
 
+      if (myimage.addEventListener) {
+        // IE9, Chrome, Safari, Opera
+        myimage.addEventListener("mousewheel", MouseWheelHandler, false);
+        // Firefox
+        myimage.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+      }
+      // IE 6/7/8
+      else myimage.attachEvent("onmousewheel", MouseWheelHandler);
 
     }
 
 
   </script>
 </head>
-<body onload="start()" id="node" style="width: 500px; height: 500px;">
+<body onload="start()"  style="width: 500px; height: 500px;">
+
+  <div id="image" style="border: 1px solid; width: 300px; height: 300px;"></div>
 
 </body>
 </html>
