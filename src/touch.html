@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<div style="width: 300px; height: 150px; background: green" id="block">
+</div>
+<ul id="log"></ul>
+
+
+<script>
+
+  //http://stackoverflow.com/questions/7018919/how-to-bind-touchstart-and-click-events-but-not-respond-to-both
+
+  let block = document.getElementById('block');
+  let log = document.getElementById('log');
+  let start = performance.now();
+
+  let publishLog = (l, color) => {
+    let o = document.createElement('li');
+    let time = (performance.now() - start).toFixed(2);
+    o.innerText = `${time} ${l}`;
+    o.style.color = color;
+    log.appendChild(o);
+    log.insertBefore(o, log.firstChild);
+  };
+
+  [
+    ['mousedown', 'lightblue'],
+    ['mousemove', 'blue'],
+    ['mouseup', 'darkblue'],
+
+    ['touchstart', 'lightorange'],
+    ['touchmove', 'orange'],
+    ['touchend', 'darkorange'],
+    ['touchcancel', 'red'],
+
+    ['click', 'black']
+
+  ].forEach(([type, color]) => {
+    block.addEventListener(type, e => {
+      console.log(e);
+      publishLog(type, color);
+    });
+  });
+
+</script>
+
+</body>
+</html>
