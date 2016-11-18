@@ -6,9 +6,11 @@
 </head>
 <body>
 
-<div style="width: 300px; height: 150px; background: green" id="block">
+<div style="width: 100%; height: 350px; background: green;" id="block">
 </div>
-<ul id="log"></ul>
+<ul id="log" style="font-size: 14px;">
+  <li>log</li>
+</ul>
 
 
 <script>
@@ -24,24 +26,27 @@
     let time = (performance.now() - start).toFixed(2);
     o.innerText = `${time} ${l}`;
     o.style.color = color;
+    o.style.fontSize = '10px';
     log.appendChild(o);
     log.insertBefore(o, log.firstChild);
   };
 
   [
-    ['mousedown', 'lightblue'],
-    ['mousemove', 'blue'],
+    ['mousedown', 'darkblue'],
+    ['mousemove', 'lighblue'],
     ['mouseup', 'darkblue'],
 
-    ['touchstart', 'lightorange'],
+    ['touchstart', 'red'],
     ['touchmove', 'orange'],
-    ['touchend', 'darkorange'],
+    ['touchend', 'red'],
     ['touchcancel', 'red'],
 
-    ['click', 'black']
+    ['click', 'black'],
+    ['dblclick', 'yellow']
 
   ].forEach(([type, color]) => {
     block.addEventListener(type, e => {
+      e.preventDefault(); //this is the solution!!!
       console.log(e);
       publishLog(type, color);
     });
